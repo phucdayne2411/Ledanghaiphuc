@@ -1,0 +1,34 @@
+body {
+    /* Đặt nền tối để hiệu ứng neon nổi bật */
+    background-color: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.neon-button {
+    /* Kiểu dáng cơ bản */
+    font-size: 24px;
+    text-decoration: none;
+    color: #0ff; /* Màu neon chính */
+    border: 4px solid #0ff;
+    padding: 10px 30px;
+    border-radius: 8px;
+    text-shadow: 0 0 7px #0ff,
+                 0 0 15px #0ff;
+    box-shadow: 0 0 20px #0ff; /* Hiệu ứng phát sáng */
+
+    /* Tạo hiệu ứng động */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hiệu ứng khi di chuột qua */
+.neon-button:hover {
+    color: #1a1a2e; /* Chữ chuyển sang màu nền */
+    background-color: #0ff; /* Nền nút phát sáng */
+    box-shadow: 0 0 50px #0ff,
+                0 0 100px #0ff; /* Tăng độ sáng và lan tỏa */
+}
