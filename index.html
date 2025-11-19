@@ -1,236 +1,239 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Công tắc B/W (Không JS)</title>
-  <style>
-    /* reset nhẹ */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Công tắc B/W (Không JS)</title>
+    <style>
+        /* reset nhẹ */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* bố cục tổng */
-body {
-  font-family: "Inter", system-ui, sans-serif;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f2f6ff 0%, #e8edff 100%);
-  color: #2d2d2d;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 32px;
-}
+        /* bố cục tổng */
+        body {
+            font-family: "Inter", system-ui, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f2f6ff 0%, #e8edff 100%);
+            color: #2d2d2d;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding: 32px;
+        }
 
-/* top bar */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #2b3a67;
-}
+        /* top bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2b3a67;
+        }
 
-/* toggle switch */
-.toggle {
-  position: relative;
-  display: inline-block;
-  width: 72px;
-  height: 38px;
-}
-.toggle input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
+        /* toggle switch */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 72px;
+            height: 38px;
+        }
+        .toggle input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
 
-/* thanh công tắc */
-.track {
-  width: 100%;
-  height: 100%;
-  border-radius: 999px;
-  background: #dfe6ff;
-  box-shadow:
-    inset 3px 3px 8px rgba(0,0,0,0.12),
-    inset -3px -3px 8px rgba(255,255,255,0.9);
-  display: flex;
-  align-items: center;
-  padding: 6px;
-  transition: background .25s ease, box-shadow .25s ease;
-}
+        /* thanh công tắc */
+        .track {
+            width: 100%;
+            height: 100%;
+            border-radius: 999px;
+            background: #dfe6ff;
+            box-shadow:
+                inset 3px 3px 8px rgba(0,0,0,0.12),
+                inset -3px -3px 8px rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            transition: background .25s ease, box-shadow .25s ease;
+        }
 
-/* nút tròn */
-.knob {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow:
-    4px 4px 10px rgba(0,0,0,0.15),
-    -4px -4px 10px rgba(255,255,255,0.8);
-  transform: translateX(0);
-  transition: transform .25s ease;
-}
+        /* nút tròn */
+        .knob {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow:
+                4px 4px 10px rgba(0,0,0,0.15),
+                -4px -4px 10px rgba(255,255,255,0.8);
+            transform: translateX(0);
+            transition: transform .25s ease;
+        }
 
-/* trạng thái */
-.state {
-  margin-left: 10px;
-  font-size: .95rem;
-  font-weight: 600;
-  color: #5a6ea5;
-}
+        /* trạng thái */
+        .state {
+            margin-left: 10px;
+            font-size: .95rem;
+            font-weight: 600;
+            color: #5a6ea5;
+            transition: color .25s ease; /* Thêm transition cho màu chữ state */
+        }
 
-/* khi bật */
-.toggle input:checked + .track {
-  background: linear-gradient(135deg,#4c61d8,#3549c7);
-  box-shadow:
-    inset 3px 3px 8px rgba(0,0,0,0.25),
-    inset -3px -3px 8px rgba(255,255,255,0.15);
-}
-.toggle input:checked + .track .knob {
-  transform: translateX(34px);
-}
+        /* khi bật */
+        .toggle input:checked + .track {
+            background: linear-gradient(135deg,#4c61d8,#3549c7);
+            box-shadow:
+                inset 3px 3px 8px rgba(0,0,0,0.25),
+                inset -3px -3px 8px rgba(255,255,255,0.15);
+        }
+        .toggle input:checked + .track .knob {
+            transform: translateX(34px);
+        }
 
-/* nội dung page bị áp filter khi ON */
-#bw-toggle:checked ~ .page {
-  filter: grayscale(100%) contrast(0.92);
-  transition: filter .3s ease;
-}
+        /* nội dung page bị áp filter khi ON */
+        #bw-toggle:checked ~ .page {
+            filter: grayscale(100%) contrast(0.92);
+            transition: filter .3s ease;
+        }
 
-/* khung nội dung */
-.page {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 26px;
-  box-shadow: 0 12px 40px rgba(20,20,40,0.08);
-  transition: filter .3s ease;
-}
+        /* khung nội dung */
+        .page {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 26px;
+            box-shadow: 0 12px 40px rgba(20,20,40,0.08);
+            transition: filter .3s ease;
+        }
+        .page h1 {
+            font-size: 2rem;
+            color: #3549c7;
+            margin-bottom: 16px;
+        }
+        .page h2 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: #2b3a67;
+        }
+        .page p {
+            line-height: 1.5;
+            margin-bottom: 12px;
+            color: #4f5475;
+        }
 
-/* card */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-  gap: 18px;
-}
+        /* card */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
 
-.card {
-  border-radius: 12px;
-  padding: 16px;
-  background: #f8faff;
-  box-shadow:
-    4px 4px 12px rgba(0,0,0,0.07),
-    -4px -4px 12px rgba(255,255,255,0.9);
-}
-.card img {
-  width: 100%;
-  height: 140px;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-.card h3 {
-  font-size: 1.05rem;
-  color: #2b3a67;
-  margin-bottom: 4px;
-}
-.card p {
-  font-size: .9rem;
-  color: #4f5475;
-  line-height: 1.35;
-}
+        .card {
+            border-radius: 12px;
+            padding: 16px;
+            background: #f8faff;
+            box-shadow:
+                4px 4px 12px rgba(0,0,0,0.07),
+                -4px -4px 12px rgba(255,255,255,0.9);
+        }
+        .card img {
+            width: 100%;
+            height: 140px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .card h3 {
+            font-size: 1.05rem;
+            color: #2b3a67;
+            margin-bottom: 4px;
+        }
+        .card p {
+            font-size: .9rem;
+            color: #4f5475;
+            line-height: 1.35;
+        }
 
-  </style>
+    </style>
 </head>
 <body>
-  <!-- checkbox điều khiển (ẩn) -->
-  <!-- id="bw-toggle" được dùng trong CSS: #bw-toggle:checked ~ .page { ... } -->
-  <input id="bw-toggle" type="checkbox" aria-hidden style="position:absolute;left:-9999px;">
+    <input id="bw-toggle" type="checkbox" aria-hidden style="position:absolute;left:-9999px;">
 
-  <header class="topbar">
-    <div class="title">Chuyển Màn Hình — Đen &amp; Trắng</div>
+    <header class="topbar">
+        <div class="title">Chuyển Màn Hình — Đen &amp; Trắng</div>
 
-    <!-- công tắc hiển thị (label + checkbox thực sự nằm trước) -->
-    <label class="toggle" for="bw-toggle">
-      <!-- Thực tế input đã tồn tại trên trang (ẩn ở trên). 
-           Dùng for để liên kết label với input để toggle hoạt động. -->
-      <!-- Chèn một input nữa trong label để đảm bảo click works trên mọi trình duyệt -->
-      <input type="checkbox" aria-label="Bật tắt đen trắng" style="position:absolute;left:-9999px;" tabindex="-1">
-      <span class="track">
-        <span class="knob" aria-hidden="true"></span>
-      </span>
-    </label>
-    <div class="state">OFF</div>
-  </header>
+        <label class="toggle" for="bw-toggle">
+            <input type="checkbox" aria-label="Bật tắt đen trắng" style="position:absolute;left:-9999px;" tabindex="-1">
+            <span class="track">
+                <span class="knob" aria-hidden="true"></span>
+            </span>
+        </label>
+        <div class="state">OFF</div>
+    </header>
 
-  <!-- Nội dung trang sẽ bị ảnh hưởng bởi checkbox #bw-toggle ở trên -->
-  <main class="page" role="main">
-    <h2>Ví dụ nội dung</h2>
-    <p>Nhấn công tắc phía trên (bên phải) để chuyển giao diện sang chế độ đen & trắng. Mã này không dùng JavaScript — chỉ CSS và HTML.</p>
+    <main class="page" role="main">
+        <h1>Khám Phá Giao Diện Độc Đáo</h1>
+        <p>Đây là một ví dụ minh họa về cách áp dụng bộ lọc CSS <code>filter: grayscale(100%)</code> cho toàn bộ nội dung trang. Kỹ thuật này giúp chuyển đổi giao diện màu sắc sang chế độ đen trắng mà không cần dùng đến JavaScript để thay đổi CSS Class, ngoại trừ việc cập nhật trạng thái văn bản ON/OFF.</p>
 
-    <div class="grid" aria-hidden="false">
-      <div class="card">
-        <img src="https://picsum.photos/seed/a/800/480" alt="ảnh minh họa">
-        <h3>Tiêu đề 1</h3>
-        <p>Một đoạn mô tả ngắn để minh họa cách bộ lọc grayscale làm ảnh hưởng đến hình ảnh và màu sắc.</p>
-      </div>
-      <div class="card">
-        <img src="https://picsum.photos/seed/b/800/480" alt="ảnh minh họa">
-        <h3>Tiêu đề 2</h3>
-        <p>Card thứ hai — thử kéo thay đổi kích thước màn hình để xem bố cục responsive.</p>
-      </div>
-      <div class="card">
-        <img src="https://picsum.photos/seed/c/800/480" alt="ảnh minh họa">
-        <h3>Tiêu đề 3</h3>
-        <p>Hình ảnh từ picsum sẽ tự động tải (yêu cầu internet). Nếu muốn thử offline, thay bằng ảnh local.</p>
-      </div>
-    </div>
-  </main>
+        <h2>Sản Phẩm Nổi Bật</h2>
+        <p>Nhấn công tắc phía trên (bên phải) để xem toàn bộ giao diện, bao gồm cả hình ảnh, bị khử màu như thế nào. Mã này thể hiện sức mạnh của bộ chọn <code>:checked ~ selector</code> trong CSS.</p>
 
-  <script>
-    /* Tùy chọn: thay đổi chữ ON/OFF trong label bằng JS nhỏ (không bắt buộc).
-       Nếu bạn muốn hoàn toàn không có JS, xóa thẻ <script> này. */
-    (function(){
-      const master = document.getElementById('bw-toggle');
-      const state = document.querySelector('.state');
-      // Đặt trạng thái ban đầu
-      function updateState(){
-        state.textContent = master.checked ? 'ON' : 'OFF';
-      }
-      if(master){
-        master.addEventListener('change', updateState);
-        updateState();
-      }
-    })();
-  </script>
+        <div class="grid" aria-hidden="false">
+            <div class="card">
+                <img src="https://picsum.photos/seed/d/800/480" alt="ảnh sản phẩm công nghệ">
+                <h3>Máy Tính Xách Tay Cực Mỏng</h3>
+                <p>Hiệu suất cao, thiết kế kim loại nguyên khối, màn hình 4K sắc nét. Sự lựa chọn hoàn hảo cho công việc sáng tạo.</p>
+            </div>
+            <div class="card">
+                <img src="https://picsum.photos/seed/e/800/480" alt="ảnh cà phê và sách">
+                <h3>Bộ Sưu Tập Cà Phê Đặc Biệt</h3>
+                <p>Tuyển chọn những hạt cà phê Arabica từ vùng cao nguyên Đà Lạt, mang lại hương vị thơm ngon và tinh tế.</p>
+            </div>
+            <div class="card">
+                <img src="https://picsum.photos/seed/f/800/480" alt="ảnh kiến trúc hiện đại">
+                <h3>Giải Pháp Kiến Trúc Xanh</h3>
+                <p>Tận dụng tối đa ánh sáng tự nhiên và vật liệu tái chế, hướng đến không gian sống bền vững và thân thiện môi trường.</p>
+            </div>
+            <div class="card">
+                <img src="https://picsum.photos/seed/g/800/480" alt="ảnh phong cảnh thiên nhiên">
+                <h3>Du Lịch Khám Phá Vùng Đất Mới</h3>
+                <p>Trải nghiệm cắm trại, đi bộ đường dài và chiêm ngưỡng vẻ đẹp hoang sơ tại các công viên quốc gia ít người biết đến.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        /* Sửa lỗi và tối ưu hóa JS để chỉ cập nhật chữ ON/OFF */
+        (function(){
+            const master = document.getElementById('bw-toggle');
+            const stateText = document.querySelector('.state');
+            const track = document.querySelector('.track');
+            
+            // Hàm cập nhật trạng thái UI/Text
+            function updateState(){
+                if (master.checked) {
+                    stateText.textContent = 'ON';
+                    // Cập nhật màu chữ state
+                    stateText.style.color = '#3549c7'; 
+                    // Cập nhật track/knob màu JS nếu cần, nhưng CSS đã lo phần này
+                } else {
+                    stateText.textContent = 'OFF';
+                    // Cập nhật màu chữ state
+                    stateText.style.color = '#5a6ea5'; 
+                }
+            }
+
+            if(master){
+                master.addEventListener('change', updateState);
+                // Đặt trạng thái ban đầu khi tải trang
+                updateState();
+            }
+        })();
+    </script>
 </body>
 </html>
-
-<script>
-  // Lấy các phần tử cần thao tác
-  const bwToggle = document.getElementById("bw-toggle");
-  const stateText = document.querySelector(".state");
-  const track = document.querySelector(".track");
-
-  // Hàm cập nhật giao diện theo trạng thái bật/tắt
-  function updateUI() {
-    if (bwToggle.checked) {
-      // Khi bật đen trắng
-      stateText.textContent = "ON";
-      stateText.style.color = "#ffffff";
-      track.style.background = "linear-gradient(180deg,#111827,#0b1220)";
-    } else {
-      // Khi tắt đen trắng
-      stateText.textContent = "OFF";
-      stateText.style.color = "#374151";
-      track.style.background = "linear-gradient(180deg,#d1d5db,#bfc7d9)";
-    }
-  }
-
-  // Khi click công tắc
-  bwToggle.addEventListener("change", updateUI);
-
-  // Cập nhật UI lần đầu (khi tải trang)
-  updateUI();
-</script>
