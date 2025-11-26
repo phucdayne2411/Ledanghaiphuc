@@ -1,0 +1,31 @@
+name: Deploy Simple HTML to phucne.somee.com
+
+on:
+  push:
+    branches:
+      - main # Kích hoạt quy trình khi có commit mới trên nhánh chính
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Sử dụng môi trường Linux để chạy Action
+
+    steps:
+    - name: 1. Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 2. FTP Deploy HTML to Somee
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+      with:
+        # Thông tin kết nối FTP (Lấy từ GitHub Secrets)
+        server: ${{ secrets.FTP_HOST }}       # Đã đổi sang IP 192.52.242.121
+        username: ${{ secrets.FTP_USERNAME }} # haiphuc
+        password: ${{ secrets.FTP_PASSWORD }} # Mật khẩu của bạn
+
+        # Cấu hình đường dẫn và chức năng
+        local-dir: ./                       # Thư mục nguồn: Gốc của repository
+        server-dir: www.phucne.somee.com/   # Đã chỉnh sửa để trỏ vào thư mục web con trên Somee
+        
+        # Chức năng dọn dẹp (tương đương với delete-unnecessary-files)
+        delete-all: true 
+        # Loại trừ các file không cần thiết
+        exclude: .git*
