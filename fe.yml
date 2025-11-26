@@ -1,0 +1,25 @@
+name: Deploy Simple HTML to phucne.somee.com
+
+on:
+  push:
+    branches:
+      - main # Triển khai mỗi khi có thay đổi trên nhánh main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: FTP Deploy HTML to Somee
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+      with:
+        server: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./ # Giả định file HTML/CSS/JS nằm ở thư mục gốc của repo
+        remote-dir: /wwwroot/ # Đường dẫn trên Somee
+        delete-unnecessary-files: true 
+        exclude: .git*
